@@ -21,6 +21,9 @@ if not(type(period_slices) is int or type(period_slices) is float):
 if not(type(epsilon) is int or type(epsilon) is float):
     print("Nustatymas epsilon turi būti skaičius")
     exit()
+if epsilon+1 == 1.0:
+    print("Epsilon reikšmė per maža")
+    exit()
 
 interval_width = math.pi / period_slices
 function = lambda x: math.tan(x)
@@ -70,11 +73,11 @@ if period != 0:
     print("q =", abs(max_derivative))
 
     rez = simple_iter_method(function, intervals[0][0], epsilon, max_derivative)
-
-    print("{:^9} | {:^15} | {:^15} | {:^15} |".format("Iteracija", "x", "g(x)", "Paklaida"))
-    print("{:-<65}".format(""))
+    print()
+    print("{:^9} | {:^19} | {:^19} | {:^19} |".format("Iteracija", "x", "g(x)", "Paklaida"))
+    print("{:-<77}".format(""))
     for index, iteration in enumerate(rez[1]):
-        print("{:<9d} | {:>15.12f} | {:>15.12f} | {:>15.12f} |".format(index + 1, iteration[0], iteration[1], iteration[2]))
+        print("{:<9d} | {:>19.12f} | {:>19.12f} | {:>19.12f} |".format(index + 1, iteration[0], iteration[1], iteration[2]))
     print("Lygties sprendinys:", rez[0])
 else:
     print("Šiame intervale paprastųjų iteracijų metodas neveikia (išvestinė, kai x=0, yra 0)")
@@ -89,11 +92,11 @@ try:
     rez = newton_method(function, function_derivative, intervals[0][0], epsilon)
     print("Pertvarkyta lygtis: tg(x)-x=0")
     print("Išvestinė: tg(x)^2")
-
-    print("{:^9} | {:^15} | {:^15} | {:^15} | {:^15} |".format("Iteracija", "x_i", "f(x)", "x_i+1", "Paklaida"))
-    print("{:-<83}".format(""))
+    print()
+    print("{:^9} | {:^19} | {:^19} | {:^19} | {:^19} |".format("Iteracija", "x_i", "f(x)", "x_i+1", "Paklaida"))
+    print("{:-<99}".format(""))
     for index, iteration in enumerate(rez[1]):
-        print("{:<9d} | {:>15.12f} | {:>15.12f} | {:>15.12f} | {:>15.12f} |".format(index + 1, iteration[0], iteration[1],
+        print("{:<9d} | {:>19.12f} | {:>19.12f} | {:>19.12f} | {:>19.12f} |".format(index + 1, iteration[0], iteration[1],
                                                                                     iteration[2], iteration[3]))
     print("Lygties sprendinys:", rez[0])
 except ValueError:
