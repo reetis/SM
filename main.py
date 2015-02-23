@@ -2,8 +2,8 @@ import sys
 from util import *
 import math, numpy
 
-period = 1
-interval_width = math.pi / 25
+period = 3
+interval_width = math.pi / 18
 epsilon = 0.0000001
 function = lambda x: math.atan(x) + period * math.pi
 function_derivative = lambda x: 1 / (x ** 2 + 1)
@@ -25,8 +25,8 @@ print("{:-<80}".format(""))
 print("{:-^80}".format(" Intervalo su sprendiniu paieška "))
 print("{:-<80}".format(""))
 
-intervals = find_sol_interval(numpy.nextafter((period - 0.5) * math.pi, (period - 0.5) * math.pi + 1),
-                              numpy.nextafter((period + 0.5) * math.pi, (period - 0.5) * math.pi - 1),
+intervals = find_sol_interval(numpy.nextafter((period - 0.5) * math.pi, (period - 0.5) * math.pi + 1).item(),
+                              numpy.nextafter((period + 0.5) * math.pi, (period - 0.5) * math.pi - 1).item(),
                               interval_width, function, lambda x: x)
 
 if len(intervals) != 1:
@@ -62,7 +62,6 @@ print("{:-<80}".format(""))
 print("{:-^80}".format(" Niutono metodas "))
 print("{:-<80}".format(""))
 
-# rez = newton_method(lambda x: (x - 1)**2 * (x - 3)**3, lambda x: (x - 3)**2 * (x - 1) * (5 * x - 9), 1.3, 10**(-6))
 rez = newton_method(lambda x: math.tan(x)-x, lambda x: math.tan(x)**2, intervals[0][0], epsilon)
 
 print("{:^9} | {:^15} | {:^15} | {:^15} | {:^15} |".format("Iteracija", "x_i", "f(x)", "x_i+1", "Paklaida"))
