@@ -1,6 +1,7 @@
 from util import *
 from config import *
 import math, numpy
+import matplotlib.pyplot as plt
 
 if "period" not in locals():
     print("Nerastas nustatymas period")
@@ -101,3 +102,45 @@ try:
     print("Lygties sprendinys:", rez[0])
 except ValueError:
     print("Šis metodas nerado tinkamos reikšmės")
+
+def f(t):
+    return numpy.exp(-t) * numpy.cos(2*numpy.pi*t)
+
+t1 = numpy.linspace(-15, 15, 500)
+
+plt.figure(1)
+plt.subplot(321)
+plt.title("x = tg(x)")
+plt.plot(t1, numpy.tan(t1), 'b', t1, t1, 'r', t1, t1-t1, 'k', t1-t1, t1, 'k')
+plt.ylim(-15, 15)
+plt.xticks(numpy.arange(-15, 15, 1.5))
+plt.yticks(numpy.arange(-15, 15, 4))
+
+plt.subplot(322)
+plt.title("(tg(x))'")
+plt.plot(t1, 1/numpy.cos(t1)**2, 'b', t1, t1-t1, 'k', t1-t1, t1, 'k')
+plt.ylim(-15, 15)
+plt.xticks(numpy.arange(-15, 15, 1.5))
+plt.yticks(numpy.arange(-15, 15, 4))
+
+plt.subplot(323)
+plt.title("x = arctg(x)")
+plt.plot(t1, numpy.arctan(t1), 'b', t1, t1, 'r', t1, t1-t1, 'k', t1-t1, t1, 'k')
+plt.ylim(-1.5, 1.5)
+plt.xticks(numpy.arange(-15, 15, 1.5))
+plt.yticks(numpy.arange(-1.5, 1.5, 0.3))
+
+plt.subplot(324)
+plt.title("(arctg(x))'")
+plt.plot(t1, 1/(1+t1**2), 'b', t1, t1-t1+1, 'r', t1, t1-t1, 'k', t1-t1, t1, 'k')
+plt.ylim(-1.5, 1.5)
+plt.xticks(numpy.arange(-15, 15, 1.5))
+plt.yticks(numpy.arange(-1.5, 1.5, 0.2))
+
+plt.subplot(325)
+plt.title("tg(x) - x = 0")
+plt.plot(t1, numpy.tan(t1) - t1, 'b', t1, t1-t1, 'k', t1-t1, t1, 'k')
+plt.ylim(-15, 15)
+plt.xticks(numpy.arange(-15, 15, 1.5))
+plt.yticks(numpy.arange(-15, 15, 4))
+plt.show()
