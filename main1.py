@@ -1,5 +1,5 @@
 from util import *
-from config import *
+from config1 import *
 import math, numpy
 import matplotlib.pyplot as plt
 
