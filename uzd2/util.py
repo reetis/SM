@@ -60,12 +60,14 @@ def generate_cubic_splines(values):
             matrix.append([h[index-1], 2*(h[index] + h[index-1]), h[index], 6*(f[index] - f[index-1])])
 
     g = thomas_algorithm(matrix)
+    print("g reikšmės: ", g)
 
     functions = []
     for index in range(len(h)):
         e = f[index] - g[index+1]*h[index]/6 - g[index]*h[index]/3
         G = g[index]/2
         H = (g[index+1] - g[index]) / (6*h[index])
+        print("S{0}(x) = {1} + {3}*(x-{2}) + {4}*(x-{2})^2 + {5}*(x-{2})^3".format(index, ys[index], xs[index], e, G, H))
         functions.append(get_spline(e, G, H, xs[index], ys[index]))
 
     return partial(composite_function, values, functions)

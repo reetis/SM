@@ -8,15 +8,19 @@ from uzd2.config import *
 
 # print(thomas_algorithm(matrix))
 
-# ----------------------------------------------------------------------------------------------------------------------
-# Funkcijos ir splaino palyginimas
-# ----------------------------------------------------------------------------------------------------------------------
+print("---------------------------------------------------------------------------------------------------------------")
+print(" Funkcijos ir splaino palyginimas")
+print("---------------------------------------------------------------------------------------------------------------")
 points = [(x, function(x)) for x in numpy.linspace(ival_a, ival_b, ival_points)]
+print("Taškai: ", points)
+
+print("----- Funkcijų generavimas")
 splines = generate_cubic_splines(points)
 
+print("----- Reikšmės tikrinimas taške")
 print("x = %f" % checkpoint)
 print("Originalus: y = %f" % function(checkpoint))
-print("Interpoliuotas: y = %f" % splines(checkpoint))
+print("Splainas: y = %f" % splines(checkpoint))
 
 t1 = numpy.linspace(ival_a - 1, ival_b + 1, 500)
 interpolated = [splines(x) for x in t1]
@@ -30,24 +34,25 @@ plt.legend(["Tikroji f-ja", "Kubinis splainas"])
 plt.title("Funkcijos ir splaino palyginimas")
 plt.scatter(x, y)
 
-# ----------------------------------------------------------------------------------------------------------------------
-# Splainas iš duotų taškų
-# ----------------------------------------------------------------------------------------------------------------------
+print("---------------------------------------------------------------------------------------------------------------")
+print(" Splainas iš duotų taškų")
+print("---------------------------------------------------------------------------------------------------------------")
+
 x, y = zip(*bin_points)
+print("Taškai: ", bin_points)
 
+print("----- Funkcijų generavimas")
 splines = generate_cubic_splines(bin_points)
-spline_ref = interpolate.interp1d(x, y, kind="cubic")
 
-print("x = %f" % checkpoint)
-print("Mano splainas: y = %f" % splines(checkpoint))
-print("Scipy splainas: y = %f" % spline_ref(checkpoint))
+print("----- Reikšmės tikrinimas taške")
+print("x = %f" % bin_checkpoint)
+print("Splainas: y = %f" % splines(bin_checkpoint))
 
 t1 = numpy.linspace(0, 5, 500)
 mine = [splines(x) for x in t1]
 
 plt.subplot(212)
-plt.plot(t1, mine, "b", t1, spline_ref(t1), "r")
-plt.legend(["Mano Splainas", "Scipy splainas"])
+plt.plot(t1, mine, "b")
 plt.title("Splainas iš tašku")
 plt.scatter(x, y)
 plt.show()

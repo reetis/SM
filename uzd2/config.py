@@ -20,3 +20,5 @@ bin_points = [
     (4, 209),
     (5, 0)
 ]
+
+bin_checkpoint = 1.5
