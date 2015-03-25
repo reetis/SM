@@ -3,8 +3,8 @@ import math
 import numpy
 import matplotlib.pyplot as plt
 
-from util import *
-from config import *
+from uzd1.util import *
+from uzd1.config import *
 
 
 if "period" not in locals():

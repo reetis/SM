@@ -39,6 +39,9 @@ def thomas_algorithm(matrix):
 
 
 def generate_cubic_splines(values):
+    def get_spline(e, G, H, xi, yi):
+        return lambda x: yi + e*(x-xi) + G*(x-xi)**2 + H*(x-xi)**3
+
     xs, ys = zip(*values)
 
     h = []
@@ -49,7 +52,14 @@ def generate_cubic_splines(values):
     for index in range(len(h)):
         f.append((ys[index+1] - ys[index])/h[index])
 
-    g = [0, 2.4, -3.6, 0]
+    matrix = []
+    for index in range(len(values)):
+        if index is 0 or index is len(values)-1:
+            matrix.append([0, 1, 0, 0])
+        else:
+            matrix.append([h[index-1], 2*(h[index] + h[index-1]), h[index], 6*(f[index] - f[index-1])])
+
+    g = thomas_algorithm(matrix)
 
     functions = []
     for index in range(len(h)):
@@ -59,9 +69,6 @@ def generate_cubic_splines(values):
         functions.append(get_spline(e, G, H, xs[index], ys[index]))
 
     return partial(composite_function, values, functions)
-
-def get_spline(e, G, H, xi, yi):
-    return lambda x: yi + e*(x-xi) + G*(x-xi)**2 + H*(x-xi)**3
 
 
 
