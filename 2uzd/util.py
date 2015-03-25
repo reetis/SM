@@ -56,9 +56,13 @@ def generate_cubic_splines(values):
         e = f[index] - g[index+1]*h[index]/6 - g[index]*h[index]/3
         G = g[index]/2
         H = (g[index+1] - g[index]) / (6*h[index])
-        functions.append(lambda x: ys[index] + e*(x-xs[index]) + G*(x-xs[index])**2 + H*(x-xs[index])**3)
+        functions.append(get_spline(e, G, H, xs[index], ys[index]))
 
     return partial(composite_function, values, functions)
+
+def get_spline(e, G, H, xi, yi):
+    return lambda x: yi + e*(x-xi) + G*(x-xi)**2 + H*(x-xi)**3
+
 
 
 def composite_function(values, functions, x):
@@ -67,9 +71,11 @@ def composite_function(values, functions, x):
         return dict_values[x]
 
     for index, val in enumerate(values):
-        if index is 0 and x < val:
-            raise ValueError("Funkcija su %.f neapibrėžta" % x)
-        elif x < val:
+        if index is 0 and x < val[0]:
+            # raise ValueError("Funkcija su %.f neapibrėžta" % x)
+            return None
+        elif x < val[0]:
             return functions[index-1](x)
 
-    raise ValueError("Funkcija su %.f neapibrėžta" % x)
+    # raise ValueError("Funkcija su %.f neapibrėžta" % x)
+    return None

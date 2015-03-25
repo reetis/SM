@@ -1,7 +1,11 @@
-from util import *
-from config1 import *
-import math, numpy
+import math
+
+import numpy
 import matplotlib.pyplot as plt
+
+from util import *
+from config import *
+
 
 if "period" not in locals():
     print("Nerastas nustatymas period")
