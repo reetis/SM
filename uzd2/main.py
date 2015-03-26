@@ -41,7 +41,7 @@ try:
     print("Originalus: y =", function(point))
     print("Splainas: y =", splines(point))
     if point < ival_a or point > ival_b:
-        print("Taškas neįeina į intervalą")
+        print("Taškas neįeina į intervalą [{};{}]".format(ival_a, ival_b))
 except ValueError:
     print("Įvestis ne skaičius")
 
@@ -74,7 +74,7 @@ try:
     print("x =", point)
     print("Splainas: y =", splines(point))
     if point < 0 or point > 5:
-        print("Taškas neįeina į intervalą")
+        print("Taškas neįeina į intervalą [0;5]")
 except ValueError:
     print("Įvestis ne skaičius")
 
