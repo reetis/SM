@@ -34,11 +34,16 @@ print("----- Funkcijų generavimas")
 splines = generate_cubic_splines(points)
 
 print("----- Reikšmės tikrinimas taške")
-print("x =", checkpoint)
-print("Originalus: y =", function(checkpoint))
-print("Splainas: y =", splines(checkpoint))
-if checkpoint < ival_a or checkpoint > ival_b:
-    print("Taškas neįeina į intervalą")
+try:
+    point = float(input("Įveskite tašką:"))
+
+    print("x =", point)
+    print("Originalus: y =", function(point))
+    print("Splainas: y =", splines(point))
+    if point < ival_a or point > ival_b:
+        print("Taškas neįeina į intervalą")
+except ValueError:
+    print("Įvestis ne skaičius")
 
 t1 = numpy.linspace(ival_a - 1, ival_b + 1, 500)
 interpolated = [splines(x) for x in t1]
@@ -63,10 +68,15 @@ print("----- Funkcijų generavimas")
 splines = generate_cubic_splines(bin_points)
 
 print("----- Reikšmės tikrinimas taške")
-print("x =", bin_checkpoint)
-print("Splainas: y =", splines(bin_checkpoint))
-if bin_checkpoint < 0 or bin_checkpoint > 5:
-    print("Taškas neįeina į intervalą")
+try:
+    point = float(input("Įveskite tašką:"))
+
+    print("x =", point)
+    print("Splainas: y =", splines(point))
+    if point < 0 or point > 5:
+        print("Taškas neįeina į intervalą")
+except ValueError:
+    print("Įvestis ne skaičius")
 
 t1 = numpy.linspace(0, 5, 500)
 mine = [splines(x) for x in t1]
