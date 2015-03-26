@@ -17,6 +17,8 @@ def print_matrix_result(matrix):
 
 print("Pirmos matricos rezultatas:")
 print_matrix_result(matrix1)
+print("Pirmos a matricos rezultatas:")
+print_matrix_result(matrix1a)
 print("Antros matricos rezultatas:")
 print_matrix_result(matrix2)
 print("Trečios matricos rezultatas:")
@@ -35,6 +37,8 @@ print("----- Reikšmės tikrinimas taške")
 print("x =", checkpoint)
 print("Originalus: y =", function(checkpoint))
 print("Splainas: y =", splines(checkpoint))
+if checkpoint < ival_a or checkpoint > ival_b:
+    print("Taškas neįeina į intervalą")
 
 t1 = numpy.linspace(ival_a - 1, ival_b + 1, 500)
 interpolated = [splines(x) for x in t1]
@@ -61,6 +65,8 @@ splines = generate_cubic_splines(bin_points)
 print("----- Reikšmės tikrinimas taške")
 print("x =", bin_checkpoint)
 print("Splainas: y =", splines(bin_checkpoint))
+if bin_checkpoint < 0 or bin_checkpoint > 5:
+    print("Taškas neįeina į intervalą")
 
 t1 = numpy.linspace(0, 5, 500)
 mine = [splines(x) for x in t1]
