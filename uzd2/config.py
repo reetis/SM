@@ -28,6 +28,9 @@ matrix3 = [
 function = lambda x: (2*x**2+6)/(x**2-2*x+5)
 ival_a = -3
 ival_b = 2
+# function = lambda x: (x+1)/(3+x**2)
+# ival_a = -9
+# ival_b = 9
 ival_points = 10
 checkpoint = 4
 
