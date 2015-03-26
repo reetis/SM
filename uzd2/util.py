@@ -24,8 +24,9 @@ def thomas_algorithm(matrix):
             C.append(Fraction(-c, b))
             D.append(Fraction(d, b))
         else:
-            D.append(Fraction(d-a*D[-1], a*C[-1]+b))
-            C.append(Fraction(-c, a*C[-1]+b))
+            denominator = a * C[-1] + b
+            D.append(Fraction(d-a*D[-1], denominator))
+            C.append(Fraction(-c, denominator))
 
     # Backward propagation
     x = []
