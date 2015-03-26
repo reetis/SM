@@ -7,12 +7,12 @@ def thomas_algorithm(matrix):
     has_strict = False
     for a, b, c, d in matrix:
         if abs(b) < abs(a) + abs(c):
-            raise ValueError("|b_i| < |a_i| + |c_i| has occurred")
+            raise ValueError("Turi būti netenkinama šita nelygybė |b_i| < |a_i| + |c_i|")
         elif abs(b) > abs(a) + abs(c):
             has_strict = True
 
     if not has_strict:
-        raise ValueError("|b_i| > |a_i| + |c_i| has not occurred")
+        raise ValueError("Su bent vienu i turi būti tenkinama šita sąlyga |b_i| > |a_i| + |c_i|")
 
     matrix = map(partial(map, lambda x: Fraction(x).limit_denominator()), matrix)
 

@@ -1,12 +1,26 @@
 import numpy
 import matplotlib.pyplot as plt
-from scipy import interpolate
 
 from uzd2.util import *
 from uzd2.config import *
 
+print("---------------------------------------------------------------------------------------------------------------")
+print(" Triistrižainių matricų sprendimas")
+print("---------------------------------------------------------------------------------------------------------------")
 
-# print(thomas_algorithm(matrix))
+def print_matrix_result(matrix):
+    try:
+        result = thomas_algorithm(matrix)
+        print("Rezultatas:", result)
+    except ValueError as e:
+        print("Šitos matricos negalima išspręsti:", e)
+
+print("Pirmos matricos rezultatas:")
+print_matrix_result(matrix1)
+print("Antros matricos rezultatas:")
+print_matrix_result(matrix2)
+print("Trečios matricos rezultatas:")
+print_matrix_result(matrix3)
 
 print("---------------------------------------------------------------------------------------------------------------")
 print(" Funkcijos ir splaino palyginimas")
@@ -18,9 +32,9 @@ print("----- Funkcijų generavimas")
 splines = generate_cubic_splines(points)
 
 print("----- Reikšmės tikrinimas taške")
-print("x = %f" % checkpoint)
-print("Originalus: y = %f" % function(checkpoint))
-print("Splainas: y = %f" % splines(checkpoint))
+print("x =", checkpoint)
+print("Originalus: y =", function(checkpoint))
+print("Splainas: y =", splines(checkpoint))
 
 t1 = numpy.linspace(ival_a - 1, ival_b + 1, 500)
 interpolated = [splines(x) for x in t1]
@@ -45,8 +59,8 @@ print("----- Funkcijų generavimas")
 splines = generate_cubic_splines(bin_points)
 
 print("----- Reikšmės tikrinimas taške")
-print("x = %f" % bin_checkpoint)
-print("Splainas: y = %f" % splines(bin_checkpoint))
+print("x =", bin_checkpoint)
+print("Splainas: y =", splines(bin_checkpoint))
 
 t1 = numpy.linspace(0, 5, 500)
 mine = [splines(x) for x in t1]
