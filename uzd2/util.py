@@ -1,6 +1,8 @@
 from fractions import Fraction
 from functools import partial
 
+import numpy as np
+
 
 def thomas_algorithm(matrix):
     # Check if applicable
@@ -89,3 +91,15 @@ def composite_function(values, functions, x):
 
     # raise ValueError("Funkcija su %.f neapibrėžta" % x)
     return None
+
+
+def convert_to_three_columns(coff_matrix, right_side):
+    first_diag = np.append([0], np.diagonal(coff_matrix, offset=-1))
+    second_diag = np.diagonal(coff_matrix)
+    third_diag = np.append(np.diagonal(coff_matrix, offset=1), [0])
+
+    result = np.append(np.array([first_diag]).T, np.array([second_diag]).T, axis=1)
+    result = np.append(result, np.array([third_diag]).T, axis=1)
+    result = np.append(result, np.array([right_side]).T, axis=1)
+
+    return result
