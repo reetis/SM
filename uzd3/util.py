@@ -10,8 +10,10 @@ def seidel_method(a, b, epsilon):
     first_req = check_diagonal_dominance(a) > 0
     second_req = check_symetry_and_positive_definite(a)
     if not (first_req or second_req):
-        if not first_req: print("Matrica nėra su vyraujamąją įstrižaine")
-        if not second_req: print("Matrica ne simetriška arba ne teigiamai apibrėžta")
+        if not first_req:
+            print("Matrica nėra su vyraujamąją įstrižaine")
+        if not second_req:
+            print("Matrica ne simetriška arba ne teigiamai apibrėžta")
         return None
 
     x = np.zeros_like(b)
@@ -21,7 +23,7 @@ def seidel_method(a, b, epsilon):
         new_x = np.zeros_like(x)
         for i in range(x.shape[0]):
             left = np.dot(a[i][:i], new_x[:i])
-            right = np.dot(a[i][i+1:], x[i+1:])
+            right = np.dot(a[i][i + 1:], x[i + 1:])
             new_x[i] = (b[i] - (left + right)) / a[i][i]
 
         error = max(abs(new_x - x))
@@ -37,7 +39,7 @@ def seidel_method(a, b, epsilon):
 
 
 def conjugate_gradient_method(a, f, epsilon):
-    if not(check_symetry_and_positive_definite(a)):
+    if not (check_symetry_and_positive_definite(a)):
         print("Matrica ne simetriška arba ne teigiamai apibrėžta")
         return None
 
@@ -48,16 +50,16 @@ def conjugate_gradient_method(a, f, epsilon):
     for iter_count in range(ITER_LIMIT):
         r = np.dot(a, p)
         alpha = np.dot(z, p) / np.dot(r, p)
-        x = x - alpha*p
-        new_z = z - alpha*r
+        x = x - alpha * p
+        new_z = z - alpha * r
 
         error = np.dot(new_z, new_z)
         print("{}. {} -- z = {} -- Paklaida: {}".format(iter_count, x, z, error))
-        if error < epsilon**2:
+        if error < epsilon ** 2:
             return x
 
         beta = error / np.dot(z, z)
-        p = new_z + beta*p
+        p = new_z + beta * p
         z = new_z
 
     print("Viršytas iteracijų limitas ({})".format(ITER_LIMIT))
@@ -83,21 +85,24 @@ def check_symetry_and_positive_definite(matrix):
 
 
 def inverse_iteration_method(a, lamb, epsilon):
-    x = np.append(np.zeros(a.shape[0]-1), [1])
+    x = np.append(np.zeros(a.shape[0] - 1), [1])
 
     print("Iteracijos:")
     for iter_count in range(ITER_LIMIT):
-        y = np.array(thomas_algorithm(convert_to_three_columns(a-np.identity(a.shape[0])*lamb, x)))
+        y = np.array(thomas_algorithm(convert_to_three_columns(a - np.identity(a.shape[0]) * lamb, x),
+                                      check_matrix_compatibility=False))
+        # y = seidel_method(a-np.identity(a.shape[0])*lamb, x, epsilon)
+        # y = conjugate_gradient_method(a-np.identity(a.shape[0])*lamb, x, epsilon)
         new_x = y / np.linalg.norm(y)
 
-        x_norm = np.linalg.norm(new_x-x)
+        x_norm = np.linalg.norm(new_x - x)
         if x_norm + epsilon >= 2:
             new_x = -new_x
-            x_norm = np.linalg.norm(new_x-x)
+            x_norm = np.linalg.norm(new_x - x)
 
         new_lamb = np.dot(np.dot(a, new_x), new_x)
 
-        print("{}. {} --||X_m+1 - X_m||= {} --|lambda_m+1 - lambda_m|= {}".format(iter_count, new_x, x_norm, new_lamb))
+        print("{}. {} -- lambda = {} -- ||X_m+1 - X_m||= {}".format(iter_count, new_x, new_lamb, x_norm))
         if (x_norm <= epsilon) and (abs(new_lamb - lamb) <= epsilon):
             return new_lamb
 

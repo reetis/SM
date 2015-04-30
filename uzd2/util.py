@@ -4,17 +4,18 @@ from functools import partial
 import numpy as np
 
 
-def thomas_algorithm(matrix):
+def thomas_algorithm(matrix, check_matrix_compatibility=True):
     # Check if applicable
-    has_strict = False
-    for a, b, c, d in matrix:
-        if abs(b) < abs(a) + abs(c):
-            raise ValueError("Turi būti netenkinama šita nelygybė |b_i| < |a_i| + |c_i|")
-        elif abs(b) > abs(a) + abs(c):
-            has_strict = True
+    if check_matrix_compatibility:
+        has_strict = False
+        for a, b, c, d in matrix:
+            if abs(b) < abs(a) + abs(c):
+                raise ValueError("Turi būti netenkinama šita nelygybė |b_i| < |a_i| + |c_i|")
+            elif abs(b) > abs(a) + abs(c):
+                has_strict = True
 
-    if not has_strict:
-        raise ValueError("Su bent vienu i turi būti tenkinama šita sąlyga |b_i| > |a_i| + |c_i|")
+        if not has_strict:
+            raise ValueError("Su bent vienu i turi būti tenkinama šita sąlyga |b_i| > |a_i| + |c_i|")
 
     matrix = map(partial(map, lambda x: Fraction(x).limit_denominator()), matrix)
 
@@ -27,7 +28,7 @@ def thomas_algorithm(matrix):
             D.append(Fraction(d, b))
         else:
             denominator = a * C[-1] + b
-            D.append(Fraction(d-a*D[-1], denominator))
+            D.append(Fraction(d - a * D[-1], denominator))
             C.append(Fraction(-c, denominator))
 
     # Backward propagation
@@ -36,45 +37,45 @@ def thomas_algorithm(matrix):
         if len(x) is 0:
             x.append(Di)
         else:
-            x.append(Ci*x[-1]+Di)
+            x.append(Ci * x[-1] + Di)
 
     return list(reversed([float(nr) for nr in x]))
 
 
 def generate_cubic_splines(values):
     def get_spline(e, G, H, xi, yi):
-        return lambda x: yi + e*(x-xi) + G*(x-xi)**2 + H*(x-xi)**3
+        return lambda x: yi + e * (x - xi) + G * (x - xi) ** 2 + H * (x - xi) ** 3
 
     xs, ys = zip(*values)
 
     h = []
-    for index in range(len(values)-1):
-        h.append(xs[index+1] - xs[index])
+    for index in range(len(values) - 1):
+        h.append(xs[index + 1] - xs[index])
 
     f = []
     for index in range(len(h)):
-        f.append((ys[index+1] - ys[index])/h[index])
+        f.append((ys[index + 1] - ys[index]) / h[index])
 
     matrix = []
     for index in range(len(values)):
-        if index is 0 or index is len(values)-1:
+        if index is 0 or index is len(values) - 1:
             matrix.append([0, 1, 0, 0])
         else:
-            matrix.append([h[index-1], 2*(h[index] + h[index-1]), h[index], 6*(f[index] - f[index-1])])
+            matrix.append([h[index - 1], 2 * (h[index] + h[index - 1]), h[index], 6 * (f[index] - f[index - 1])])
 
     g = thomas_algorithm(matrix)
     print("g reikšmės: ", g)
 
     functions = []
     for index in range(len(h)):
-        e = f[index] - g[index+1]*h[index]/6 - g[index]*h[index]/3
-        G = g[index]/2
-        H = (g[index+1] - g[index]) / (6*h[index])
-        print("S{0}(x) = {1} + {3}*(x-{2}) + {4}*(x-{2})^2 + {5}*(x-{2})^3".format(index, ys[index], xs[index], e, G, H))
+        e = f[index] - g[index + 1] * h[index] / 6 - g[index] * h[index] / 3
+        G = g[index] / 2
+        H = (g[index + 1] - g[index]) / (6 * h[index])
+        print(
+            "S{0}(x) = {1} + {3}*(x-{2}) + {4}*(x-{2})^2 + {5}*(x-{2})^3".format(index, ys[index], xs[index], e, G, H))
         functions.append(get_spline(e, G, H, xs[index], ys[index]))
 
     return partial(composite_function, values, functions)
-
 
 
 def composite_function(values, functions, x):
@@ -87,7 +88,7 @@ def composite_function(values, functions, x):
             # raise ValueError("Funkcija su %.f neapibrėžta" % x)
             return None
         elif x < val[0]:
-            return functions[index-1](x)
+            return functions[index - 1](x)
 
     # raise ValueError("Funkcija su %.f neapibrėžta" % x)
     return None
