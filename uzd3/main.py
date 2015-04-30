@@ -32,7 +32,7 @@ result = conjugate_gradient_method(A, B, epsilon)
 print("Rezultatas: {}\n".format(result))
 
 
-print("----------- Jungtinių gradientų metodas -----------------------------------------------------------------------")
+print("----------- Atvirštinių iteracijų metodas ---------------------------------------------------------------------")
 T = np.array(T)
 C2 = np.array(C2)
 

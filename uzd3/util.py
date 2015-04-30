@@ -7,6 +7,7 @@ ITER_LIMIT = 1000
 
 
 def seidel_method(a, b, epsilon):
+    error_calc = lambda x: max(abs(x))  #inf-norm
     first_req = check_diagonal_dominance(a) > 0
     second_req = check_symetry_and_positive_definite(a)
     if not (first_req or second_req):
@@ -15,6 +16,12 @@ def seidel_method(a, b, epsilon):
         if not second_req:
             print("Matrica ne simetriška arba ne teigiamai apibrėžta")
         return None
+
+    if second_req is 2:
+        print("Paklaida skaičiuojama 1 normoje")
+        error_calc = lambda x: np.sum(abs(x))
+    else:
+        print("Paklaida skaičiuojama inf normoje")
 
     x = np.zeros_like(b)
 
@@ -26,7 +33,7 @@ def seidel_method(a, b, epsilon):
             right = np.dot(a[i][i + 1:], x[i + 1:])
             new_x[i] = (b[i] - (left + right)) / a[i][i]
 
-        error = max(abs(new_x - x))
+        error = error_calc(new_x - x)
         x = new_x
 
         print("{}. {} -- Paklaida: {}".format(iter_count, x, error))
@@ -54,7 +61,7 @@ def conjugate_gradient_method(a, f, epsilon):
         new_z = z - alpha * r
 
         error = np.dot(new_z, new_z)
-        print("{}. {} -- z = {} -- Paklaida: {}".format(iter_count, x, z, error))
+        print("{}. {} -- z = {} -- (z, z) = {}".format(iter_count, x, z, error))
         if error < epsilon ** 2:
             return x
 
@@ -73,9 +80,9 @@ def check_diagonal_dominance(matrix):
     row_sums = np.sum(abs_matrix, axis=1) - diagonal
     col_sums = np.sum(abs_matrix, axis=0) - diagonal
     if np.all(diagonal > row_sums):
-        result += 1
+        result += 1         #Jei įstrižainė vyrauja eilutėse
     if np.all(diagonal > col_sums):
-        result += 2
+        result += 2         #Jei įstrižainė vyrauja stulpeliuose
 
     return result
 
