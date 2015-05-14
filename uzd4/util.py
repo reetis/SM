@@ -4,8 +4,8 @@ import numpy as np
 
 
 def simpsons_method(function, int_begin: float, int_end: float, n: int) -> float:
-    if n < 2:
-        print("N turi būti ne mažesnis už 2")
+    if n < 1:
+        print("N turi būti ne mažesnis už 1")
         return None
 
     x = np.linspace(int_begin, int_end, n+1)
@@ -18,8 +18,8 @@ def simpsons_method(function, int_begin: float, int_end: float, n: int) -> float
 
 
 def gauss_quadrature_3(function, int_begin: float, int_end: float, n: int) -> float:
-    if n < 2:
-        print("N turi būti ne mažesnis už 2")
+    if n < 1:
+        print("N turi būti ne mažesnis už 1")
         return None
 
     x = np.linspace(int_begin, int_end, n+1)
