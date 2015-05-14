@@ -44,7 +44,7 @@ def runge_kutta_midpoint(function, start: float, end: float, step: float, init_v
     current_point = start
     result = [(current_point, init_value)]
     current_point += step
-    while current_point < end+step:
+    while current_point < end+step/2:
         k1 = function(current_point, result[-1][1])
         k2 = function(current_point+step/2., result[-1][1] + step/2.*k1)
         result.append((current_point, result[-1][1]+step*k2))
